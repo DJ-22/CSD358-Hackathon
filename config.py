@@ -1,8 +1,8 @@
-"""BridgeHop configuration: every hyperparameter lives here (PLAN.md Constraints)."""
+"""BridgeHop configuration: every hyperparameter lives here."""
 import json
 from pathlib import Path
 
-# ===== A SECTION (Person A edits only this) =====
+# ===== INDEX & RETRIEVAL =====
 ROOT = Path(__file__).resolve().parent
 DATA_RAW = ROOT / "data" / "raw"
 DATA_PROCESSED = ROOT / "data" / "processed"
@@ -46,7 +46,7 @@ HOP2_TOP = 3
 ALPHA = 0.5
 TITLE_BONUS = 0.2
 
-# ===== B SECTION (Person B edits only this) =====
+# ===== AGENT & EVALUATION =====
 MAX_ENTITY_DF = 2000
 MAX_NGRAM = 6
 TOP_M = 5
