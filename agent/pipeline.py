@@ -1,4 +1,4 @@
-"""BridgeHop pipeline: systems S0-S5 (PLAN.md §11)."""
+"""BridgeHop pipeline: systems S0-S5."""
 from agent.state import ResearchState
 
 

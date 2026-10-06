@@ -1,4 +1,4 @@
-"""Dense document embeddings with MiniLM for hybrid hop 2 (PLAN.md §9)."""
+"""Dense document embeddings with MiniLM for hybrid hop 2."""
 import sys, pathlib  # bootstrap: make the repo root importable
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -19,7 +19,7 @@ def encode_query(text: str) -> np.ndarray:
 
 def main() -> None:
     """Embed every document: --corpus dev|train."""
-    raise NotImplementedError("A4")
+    raise NotImplementedError
 
 
 if __name__ == "__main__":

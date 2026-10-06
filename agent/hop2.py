@@ -1,4 +1,4 @@
-"""Hop-2 retrieval: BM25 mode and hybrid sparse-filter -> dense-score mode (PLAN.md §9, Novelty B)."""
+"""Hop-2 retrieval: BM25 mode and hybrid sparse-filter -> dense-score mode."""
 from agent.state import ResearchState
 
 

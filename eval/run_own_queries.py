@@ -5,7 +5,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
 def main() -> None:
     """Precision@k on own judged queries."""
-    raise NotImplementedError("A6")
+    raise NotImplementedError
 
 
 if __name__ == "__main__":

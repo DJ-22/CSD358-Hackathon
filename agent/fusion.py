@@ -1,4 +1,4 @@
-"""Rank fusion: reciprocal rank fusion and CombSUM (PLAN.md §10)."""
+"""Rank fusion: reciprocal rank fusion and CombSUM."""
 
 
 def rrf(lists: list[list[tuple[int, float]]], k: int = 60) -> list[tuple[int, float]]:

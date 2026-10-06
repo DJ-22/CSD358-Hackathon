@@ -1,4 +1,4 @@
-"""Text analysis: tokenisation, case-folding, stop-word removal, Porter stemming (PLAN.md §1)."""
+"""Text analysis: tokenisation, case-folding, stop-word removal, Porter stemming."""
 
 
 def analyze(text: str, stem: bool = True) -> list[str]:

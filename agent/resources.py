@@ -1,4 +1,4 @@
-"""Shared retrieval resources for one corpus: index, linker, embeddings, ranker (PLAN.md §I)."""
+"""Shared retrieval resources for one corpus: index, linker, embeddings, ranker."""
 from dataclasses import dataclass
 from typing import Any
 

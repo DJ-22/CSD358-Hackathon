@@ -1,4 +1,4 @@
-"""Dictionary-based entity linker over corpus titles (PLAN.md §4)."""
+"""Dictionary-based entity linker over corpus titles."""
 
 
 class EntityLinker:

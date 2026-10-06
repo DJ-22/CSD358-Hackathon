@@ -1,4 +1,4 @@
-"""IR features for the learned bridge ranker (PLAN.md §8, Novelty A)."""
+"""IR features for the learned bridge ranker."""
 
 FEATURE_NAMES = [
     "tfidf_in_source", "src_hop1_score", "src_hop1_rank", "mean_idf", "n_src_docs", "in_title_zone",

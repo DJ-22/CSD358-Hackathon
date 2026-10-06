@@ -1,4 +1,4 @@
-"""Retrieval evaluation metrics: recall@k, joint@k, P@k, MRR (PLAN.md §12)."""
+"""Retrieval evaluation metrics: recall@k, joint@k, P@k, MRR."""
 import pandas as pd
 
 
