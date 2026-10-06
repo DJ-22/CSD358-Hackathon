@@ -1,4 +1,4 @@
-"""Reasoning-chain (path) scoring (PLAN.md §10, novelty 3)."""
+"""Reasoning-chain (path) scoring."""
 
 
 def score_chains(state, res, cfg) -> list[dict]:

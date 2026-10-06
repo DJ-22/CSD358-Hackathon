@@ -1,4 +1,4 @@
-"""Inference with the learned bridge ranker (PLAN.md §8)."""
+"""Inference with the learned bridge ranker."""
 
 
 def rank_bridges(state, hop1_results, res, k: int = 3) -> list[tuple[str, float, int]]:

@@ -1,4 +1,4 @@
-"""Title-anchored bridge extraction and residual query (PLAN.md §7, novelties 1 & 2)."""
+"""Title-anchored bridge extraction and residual query"""
 
 
 def bridge_candidates(state, hop1_results, res) -> list[dict]:

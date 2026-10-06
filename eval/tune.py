@@ -5,7 +5,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
 def main() -> None:
     """Grid search of retrieval hyperparameters on TUNE."""
-    raise NotImplementedError("B")
+    raise NotImplementedError
 
 
 if __name__ == "__main__":
