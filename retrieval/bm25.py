@@ -1,4 +1,4 @@
-"""Zone-weighted BM25 ranking with term-at-a-time accumulators (PLAN.md §3)."""
+"""Zone-weighted BM25 ranking with term-at-a-time accumulators."""
 
 
 def bm25_search(index, terms: list[str], k: int, candidates: set[int] | None = None) -> list[tuple[int, float]]:

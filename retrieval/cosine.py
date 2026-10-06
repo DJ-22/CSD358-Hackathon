@@ -1,4 +1,4 @@
-"""lnc.ltc cosine vector-space baseline (PLAN.md §3)."""
+"""lnc.ltc cosine vector-space baseline."""
 
 
 def cosine_search(index, terms: list[str], k: int) -> list[tuple[int, float]]:

@@ -1,4 +1,4 @@
-"""Boolean retrieval: df-ordered AND, OR union and phrase queries (PLAN.md §3)."""
+"""Boolean retrieval: df-ordered AND, OR union and phrase queries."""
 
 
 def boolean_and(index, terms: list[str]) -> tuple[list[int], list[str]]:

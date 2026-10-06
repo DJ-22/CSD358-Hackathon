@@ -1,4 +1,4 @@
-"""Positional zone inverted index with title/body zones (PLAN.md §2)."""
+"""Positional zone inverted index with title/body zones."""
 
 
 class InvertedIndex:

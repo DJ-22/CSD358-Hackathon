@@ -1,4 +1,4 @@
-"""Question parser (qtype, entities, query terms) and hop-1 retrieval (PLAN.md §5)."""
+"""Question parser (qtype, entities, query terms) and hop-1 retrieval."""
 from agent.state import ResearchState
 
 

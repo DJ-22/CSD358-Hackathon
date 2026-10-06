@@ -1,4 +1,4 @@
-"""Rocchio-style pseudo-relevance feedback (PLAN.md §3)."""
+"""Rocchio-style pseudo-relevance feedback."""
 
 
 def prf_expand(index, query_terms: dict[str, float], top_docs: list[int], n_terms: int, beta: float) -> dict[str, float]:
