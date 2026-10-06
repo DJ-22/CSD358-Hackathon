@@ -106,7 +106,7 @@ def main() -> None:
     write_json(out / "split_eval.json", split_eval)
     write_json(out / "split_tune.json", split_tune)
 
-    # --- train: LTR questions and their own corpus (never mixed with dev) ---
+    # -- train: LTR questions and their own corpus (never mixed with dev) ---
     train = [r for r in load_records(config.TRAIN_PARQUET) if r["type"] == "bridge"]
     train.sort(key=lambda r: r["qid"])
     train = random.Random(config.SEED).sample(train, config.LTR_TRAIN_N)
