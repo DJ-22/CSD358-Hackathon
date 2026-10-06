@@ -1,0 +1,13 @@
+numpy
+pandas
+pyarrow
+requests
+tqdm
+nltk
+scikit-learn
+lightgbm
+sentence-transformers
+torch
+matplotlib
+rich
+pytest
