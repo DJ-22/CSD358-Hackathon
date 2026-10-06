@@ -1,4 +1,4 @@
-"""ResearchState: the agent's inspectable research trace (PLAN.md §6). INTERFACE FILE after G-A0."""
+"""ResearchState: the agent's inspectable research trace."""
 from dataclasses import dataclass, field, fields
 
 
