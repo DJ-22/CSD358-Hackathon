@@ -1,6 +1,7 @@
 {
   "W_TITLE": 1.0,
   "ALPHA": 0.5,
+  "TITLE_BONUS": 0.5,
   "LAMBDAS": [
     0.3,
     0.3,
