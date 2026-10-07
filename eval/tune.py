@@ -28,14 +28,29 @@ def mean_joint10(rankings: dict[str, list[int]], qrels: dict[str, list[int]]) ->
 
 
 def main() -> None:
-    """Grid-search W_TITLE, ALPHA and the chain lambdas on TUNE; write tuned_params.json and the sweep data."""
+    """Re-tune from the config defaults: set any existing tuned_params.json aside (restored if tuning fails)."""
+    if not TUNED_PATH.exists():
+        tune_all()
+        return
+    import importlib
+    backup = config.CACHE_DIR / "tuned_params.prev.json"
+    backup.parent.mkdir(parents=True, exist_ok=True)
+    TUNED_PATH.replace(backup)
+    importlib.reload(config)                                  # config without tuned overrides = the defaults
+    try:
+        tune_all()
+    except BaseException:
+        backup.replace(TUNED_PATH)
+        raise
+
+
+def tune_all() -> None:
+    """Grid-search W_TITLE, ALPHA x TITLE_BONUS and the chain lambdas on TUNE; write tuned_params.json and sweeps."""
     from agent.chains import final_ranking, score_chains
     from agent.pipeline import run_system
     from agent.resources import load_resources
     from eval.run_eval import build_qrels, load_questions, load_split
 
-    if TUNED_PATH.exists():
-        sys.exit(f"{TUNED_PATH.name} exists and is already applied by config; delete it to re-tune from defaults")
     tune = load_split("tune")
     eval_qids = set(load_split("eval"))
     assert not eval_qids & set(tune), "TUNE overlaps EVAL"
