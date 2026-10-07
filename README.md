@@ -4,7 +4,7 @@ Multi-hop retrieval over HotpotQA paragraphs using a readable chain of classic I
 
 **CSD358 Information Retrieval: Hackathon (Midsem) · Track T2: Conversational and agentic search**
 Team: Arnav Jyoti (2410110071) · Daksh Jain (2410110113) · Medhavee Binani (2410110198)
-Report: [`REPORT.md`](REPORT.md) · Demo video: `<unlisted video link>`
+Report: [`REPORT.md`](REPORT.md) · Demo video: [link](https://youtu.be/FB9KRSuUHIY)
 
 A multi-hop question such as *"When was the producer of the film Betrayal born?"* needs two paragraphs. The first,
 *Betrayal (1983 film)*, shares words with the question. The second, *Sam Spiegel*, connects only through an
