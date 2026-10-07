@@ -75,6 +75,7 @@ def test_hybrid_respects_exclude(hres):
 
 
 def test_hybrid_title_bonus(hres, monkeypatch):
+    monkeypatch.setattr(config, "TITLE_BONUS", 0.2)
     st = state_with_residual(hres, "actress")
     out = {d: (sp, de, sb) for d, sp, de, sb in hop2_retrieve("shirley temple", st, hres, "hybrid", 0.0, None)}
     assert out[0][1] == pytest.approx(1.0, abs=1e-3) and out[1][1] == pytest.approx(0.9, abs=1e-3)
