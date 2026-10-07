@@ -130,21 +130,33 @@ def plot_bridge_hit(df: pd.DataFrame) -> None:
 
 
 def plot_alpha_sweep(sweeps: dict, tuned: dict) -> None:
-    """TUNE joint@10 of S3B over the sparse/dense interpolation weight alpha."""
+    """TUNE joint@10 of S3B over the sparse/dense interpolation weight alpha, one line per exact-title bonus."""
     pts = sweeps["ALPHA"]
-    xs, ys = [p["value"] for p in pts], [p["joint@10"] for p in pts]
-    plt, fig, ax = _fig(6.5, 4.2)
-    ax.plot(xs, ys, color=SERIES[0], linewidth=2, marker="o", markersize=7)
-    best = tuned["ALPHA"]
-    yb = ys[xs.index(best)]
-    ax.annotate(f"chosen α={best} ({yb:.3f})", (best, yb), xytext=(0, -14), textcoords="offset points",
-                ha="center", va="top", fontsize=8.5, color=TEXT)
-    pad = (max(ys) - min(ys)) * 0.15 or 0.01
-    ax.set_ylim(min(ys) - pad, max(ys) + pad)
+    bonuses = sorted({p.get("title_bonus", config.TITLE_BONUS) for p in pts})
+    plt, fig, ax = _fig(7, 4.5)
+    all_y, ends = [], {}
+    for i, bonus in enumerate(bonuses):
+        line = sorted((p["value"], p["joint@10"]) for p in pts if p.get("title_bonus", config.TITLE_BONUS) == bonus)
+        xs, ys = zip(*line)
+        all_y += ys
+        ax.plot(xs, ys, color=SERIES[i], linewidth=2, marker="o", markersize=7, label=f"title bonus {bonus}")
+        ends.setdefault((xs[-1], round(ys[-1], 4)), []).append(str(bonus))
+    for (x, y), names in ends.items():   # lines ending on the same point share one direct label
+        ax.annotate("bonus " + ", ".join(names), (x, y), xytext=(8, 0), textcoords="offset points",
+                    va="center", fontsize=8, color=TEXT)
+    best_a, best_b = tuned["ALPHA"], tuned.get("TITLE_BONUS", config.TITLE_BONUS)
+    yb = next(p["joint@10"] for p in pts if p["value"] == best_a and p.get("title_bonus", best_b) == best_b)
+    ax.plot(best_a, yb, marker="o", markersize=13, markerfacecolor="none", markeredgecolor=TEXT, markeredgewidth=1.5)
+    ax.annotate(f"chosen α={best_a}, bonus={best_b} ({yb:.3f})", (best_a, yb), xytext=(0, 12),
+                textcoords="offset points", ha="center", va="bottom", fontsize=8.5, color=TEXT)
+    pad = (max(all_y) - min(all_y)) * 0.15 or 0.01
+    ax.set_ylim(min(all_y) - pad, max(all_y) + 2.5 * pad)
+    ax.set_xlim(-0.05, 1.22)
     ax.set_xlabel("α  (1 = sparse BM25 only, 0 = dense MiniLM only)")
     ax.set_ylabel("S3B joint@10 on TUNE")
-    ax.set_title(f"Hybrid hop 2: α sweep (TUNE, n={sweeps['n']})", loc="left")
+    ax.set_title(f"Hybrid hop 2: α × exact-title bonus (TUNE, n={sweeps['n']})", loc="left")
     style_axes(ax)
+    _legend(ax, loc="lower center", ncol=len(bonuses))
     _save(plt, fig, "alpha_sweep.png")
 
 
