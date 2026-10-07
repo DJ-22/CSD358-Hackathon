@@ -25,5 +25,9 @@ def load_resources(corpus: str = "dev", with_ranker: bool = True) -> Resources:
     emb_path = config.CACHE_DIR / f"doc_emb_{corpus}.npy"
     emb = load_embeddings(corpus) if emb_path.exists() else None
     title2doc = json.loads((config.DATA_PROCESSED / f"title2doc_{corpus}.json").read_text(encoding="utf-8"))
+    ranker = None
+    if with_ranker:
+        from agent.bridge_ranker import load_ranker
+        ranker = load_ranker()
     return Resources(corpus=corpus, index=load_index(corpus), linker=EntityLinker(corpus), emb=emb,
-                     ranker=None, title2doc=title2doc)
+                     ranker=ranker, title2doc=title2doc)
