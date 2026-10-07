@@ -1,4 +1,4 @@
-"""Hyperparameter tuning on the TUNE split only: W_TITLE (S0), ALPHA (S3B), chain lambdas (S5)."""
+"""Hyperparameter tuning on the TUNE split only: W_TITLE (S0), ALPHA x TITLE_BONUS (S3B), chain lambdas (S5)."""
 import sys, pathlib  # bootstrap: make the repo root importable
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -65,15 +65,17 @@ def main() -> None:
     best_w = max(sweeps["W_TITLE"], key=lambda r: (r["joint@10"], -abs(r["value"] - 2.0)))["value"]
     config.W_TITLE = best_w
 
-    # 2. sparse/dense interpolation of hybrid hop 2
+    # 2. hybrid hop 2: sparse/dense interpolation alpha x exact-title bonus, searched jointly
     sweeps["ALPHA"] = []
-    for a in config.ALPHA_GRID:
+    for bonus, a in product(config.TITLE_BONUS_GRID, config.ALPHA_GRID):
+        config.TITLE_BONUS = bonus
         cfg = dict(config.SYSTEMS["S3B"], alpha=a)
-        score = mean_joint10(run(cfg, f"S3B alpha={a}")[0], qrels)
-        sweeps["ALPHA"].append({"value": a, "joint@10": score})
-        print(f"ALPHA={a}: S3B joint@10 {score:.4f}")
-    best_a = max(sweeps["ALPHA"], key=lambda r: (r["joint@10"], -abs(r["value"] - 0.5)))["value"]
-    config.ALPHA = best_a
+        score = mean_joint10(run(cfg, f"S3B alpha={a} bonus={bonus}")[0], qrels)
+        sweeps["ALPHA"].append({"value": a, "title_bonus": bonus, "joint@10": score})
+        print(f"ALPHA={a} TITLE_BONUS={bonus}: S3B joint@10 {score:.4f}")
+    best = max(sweeps["ALPHA"], key=lambda r: (r["joint@10"], -abs(r["value"] - 0.5) - abs(r["title_bonus"] - 0.2)))
+    best_a, best_bonus = best["value"], best["title_bonus"]
+    config.ALPHA, config.TITLE_BONUS = best_a, best_bonus
 
     # 3. chain-score weights: hops run once, chains and final ranking re-scored per lambda
     _, states = run(dict(config.SYSTEMS["S5"], alpha=best_a), "S5 hops")
@@ -90,7 +92,7 @@ def main() -> None:
                                                                        zip(r["value"], (0.3, 0.3, 0.4)))))["value"]
     print(f"LAMBDAS={best_l}: S5 joint@10 {max(r['joint@10'] for r in sweeps['LAMBDAS']):.4f}")
 
-    tuned = {"W_TITLE": best_w, "ALPHA": best_a, "LAMBDAS": best_l}
+    tuned = {"W_TITLE": best_w, "ALPHA": best_a, "TITLE_BONUS": best_bonus, "LAMBDAS": best_l}
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     TUNED_PATH.write_text(json.dumps(tuned, indent=2) + "\n", encoding="utf-8")
     SWEEPS_PATH.write_text(json.dumps({"split": "tune", "n": len(tune), "metric": "joint@10", **sweeps}, indent=1)
