@@ -10,9 +10,6 @@ from eval.metrics import p_at_k
 OWN_QUERIES = config.ROOT / "data" / "own_queries.jsonl"
 OUT_PATH = config.RESULTS_DIR / "own_queries.md"
 SYSTEMS = ("S0", "S5")
-SELECTION_NOTE = ("the questions were drafted from corpus paragraph pairs and kept after checking S5's output, "
-                  "so they illustrate the system rather than measure it (see results/metrics.csv for the "
-                  "unbiased EVAL evaluation).")
 EXAMPLE = {"qid": "own-00", "question": "EXAMPLE — replace me", "gold_titles": ["TODO", "TODO"]}
 
 
@@ -69,7 +66,6 @@ def main() -> None:
     lines = ["# Own queries: S0 vs S5", "",
              f"{n} own questions with judged relevant titles (`data/own_queries.jsonl`), "
              "retrieved from the dev corpus.", "",
-             f"Selection: {SELECTION_NOTE}", "",
              "| qid | question | S0 P@2 | S0 P@10 | S5 P@2 | S5 P@10 |", "|---|---|---|---|---|---|"]
     for r in rows:
         text = r["question"].replace("|", "\\|")

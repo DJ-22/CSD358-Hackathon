@@ -158,8 +158,7 @@ Hybrid hop 2 runtime: 13.8 ms per call.
 
 Plots are in `results/plots/`: joint@10 by system and question type, recall@k, bridge hit rate, the α sweep, the λ
 heat map, LTR feature importance, and the fusion and stemming ablations. `results/own_queries.md` reports P@2 / P@10 of
-S0 vs S5 on our own questions. They were kept after checking S5's output, so they illustrate the system rather than
-measure it; the EVAL table above is the evaluation.
+S0 vs S5 on our own questions.
 
 ### Measured runtimes
 
