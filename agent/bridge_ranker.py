@@ -9,11 +9,16 @@ MODEL_PATH = config.MODELS_DIR / "bridge_ltr.txt"
 
 
 def load_ranker():
-    """Load the trained LambdaMART bridge ranker (None if it has not been trained yet)."""
+    """Load the trained LambdaMART bridge ranker (None if it has not been trained yet).
+
+    Line endings are normalised first: a git checkout with autocrlf turns the text model into CRLF,
+    which the LightGBM parser rejects.
+    """
     if not MODEL_PATH.exists():
         return None
     import lightgbm as lgb
-    return lgb.Booster(model_file=str(MODEL_PATH))
+    text = MODEL_PATH.read_bytes().decode("utf-8").replace("\r\n", "\n")
+    return lgb.Booster(model_str=text)
 
 
 def softmax(x: np.ndarray) -> np.ndarray:
