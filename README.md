@@ -2,6 +2,10 @@
 
 Multi-hop retrieval over HotpotQA paragraphs using a readable chain of classic IR operations.
 
+**CSD358 Information Retrieval: Hackathon (Midsem) · Track T2: Conversational and agentic search**
+Team: Arnav Jyoti (2410110071) · Daksh Jain (2410110113) · Medhavee Binani (2410110198)
+Report: [`REPORT.md`](REPORT.md) · Demo video: `<unlisted video link>`
+
 A multi-hop question such as *"When was the producer of the film Betrayal born?"* needs two paragraphs. The first,
 *Betrayal (1983 film)*, shares words with the question. The second, *Sam Spiegel*, connects only through an
 intermediate entity. Single-shot retrieval finds the first and usually misses the second. BridgeHop handles this in
@@ -46,15 +50,15 @@ question
 [FINAL]   chain-first ranking (or RRF / CombSUM over the hop lists) → top 20 + runs/<qid>.json trace
 ```
 
-| System | What it adds |
-|---|---|
-| S0 / S0c | single-shot zone BM25 / lnc.ltc cosine |
-| S1 | parser + Boolean / free-text hop 1 |
-| S2 | S1 + Rocchio pseudo-relevance feedback |
-| S3 | hand-scored bridges + BM25 hop 2 + chains |
-| S4 | S3 with the learned bridge ranker |
-| S3B | S3 with hybrid hop 2 |
-| S5 | learned bridge ranker + hybrid hop 2 (full system) |
+| System   | What it adds                                       |
+| -------- | -------------------------------------------------- |
+| S0 / S0c | single-shot zone BM25 / lnc.ltc cosine             |
+| S1       | parser + Boolean / free-text hop 1                 |
+| S2       | S1 + Rocchio pseudo-relevance feedback             |
+| S3       | hand-scored bridges + BM25 hop 2 + chains          |
+| S4       | S3 with the learned bridge ranker                  |
+| S3B      | S3 with hybrid hop 2                               |
+| S5       | learned bridge ranker + hybrid hop 2 (full system) |
 
 ## Results
 
@@ -63,21 +67,21 @@ HotpotQA distractor dev set. Parameters were tuned on a disjoint set of 300 TUNE
 
 **joint@10 0.600 (S0, single-shot BM25) → 0.772 (S5, full system), +0.172 absolute.**
 
-| system | joint@10 | joint@2 | recall@10 | mrr | hop2_recall@10 | bridge_hit@3 | joint@10 bridge | joint@10 comparison | ms/q |
-|---|---|---|---|---|---|---|---|---|---|
-| S0 | 0.600 | 0.262 | 0.786 | 0.849 | 0.601 | – | 0.522 | 0.932 | 4.6 |
-| S0+nostem | 0.601 | 0.259 | 0.787 | 0.848 | 0.608 | – | 0.522 | 0.937 | 3.8 |
-| S0c | 0.572 | 0.211 | 0.768 | 0.797 | 0.588 | – | 0.510 | 0.833 | 7.2 |
-| S1 | 0.600 | 0.262 | 0.786 | 0.849 | 0.601 | – | 0.522 | 0.932 | 6.9 |
-| S2 | 0.649 | 0.128 | 0.807 | 0.707 | 0.653 | – | 0.597 | 0.869 | 13.3 |
-| S3 | 0.705 | 0.340 | 0.817 | 0.802 | 0.732 | 0.459 | 0.661 | 0.890 | 11.0 |
-| S4 | 0.773 | 0.494 | 0.849 | 0.798 | 0.796 | 0.569 | 0.747 | 0.885 | 36.3 |
-| S3B | 0.697 | 0.417 | 0.802 | 0.804 | 0.727 | 0.459 | 0.653 | 0.885 | 42.0 |
-| S5 | 0.772 | 0.537 | 0.850 | 0.795 | 0.795 | 0.569 | 0.747 | 0.880 | 30.3 |
-| S5+chain | 0.772 | 0.537 | 0.850 | 0.795 | 0.795 | 0.569 | 0.747 | 0.880 | 42.0 |
-| S5+combsum | 0.835 | 0.215 | 0.900 | 0.711 | 0.839 | 0.569 | 0.811 | 0.937 | 49.4 |
-| S5+nostem | 0.767 | 0.525 | 0.843 | 0.792 | 0.792 | 0.569 | 0.742 | 0.874 | 38.4 |
-| S5+rrf | 0.787 | 0.178 | 0.868 | 0.672 | 0.805 | 0.569 | 0.758 | 0.911 | 53.1 |
+| system     | joint@10 | joint@2 | recall@10 | mrr   | hop2_recall@10 | bridge_hit@3 | joint@10 bridge | joint@10 comparison | ms/q |
+| ---------- | -------- | ------- | --------- | ----- | -------------- | ------------ | --------------- | ------------------- | ---- |
+| S0         | 0.600    | 0.262   | 0.786     | 0.849 | 0.601          | –           | 0.522           | 0.932               | 4.6  |
+| S0+nostem  | 0.601    | 0.259   | 0.787     | 0.848 | 0.608          | –           | 0.522           | 0.937               | 3.8  |
+| S0c        | 0.572    | 0.211   | 0.768     | 0.797 | 0.588          | –           | 0.510           | 0.833               | 7.2  |
+| S1         | 0.600    | 0.262   | 0.786     | 0.849 | 0.601          | –           | 0.522           | 0.932               | 6.9  |
+| S2         | 0.649    | 0.128   | 0.807     | 0.707 | 0.653          | –           | 0.597           | 0.869               | 13.3 |
+| S3         | 0.705    | 0.340   | 0.817     | 0.802 | 0.732          | 0.459        | 0.661           | 0.890               | 11.0 |
+| S4         | 0.773    | 0.494   | 0.849     | 0.798 | 0.796          | 0.569        | 0.747           | 0.885               | 36.3 |
+| S3B        | 0.697    | 0.417   | 0.802     | 0.804 | 0.727          | 0.459        | 0.653           | 0.885               | 42.0 |
+| S5         | 0.772    | 0.537   | 0.850     | 0.795 | 0.795          | 0.569        | 0.747           | 0.880               | 30.3 |
+| S5+chain   | 0.772    | 0.537   | 0.850     | 0.795 | 0.795          | 0.569        | 0.747           | 0.880               | 42.0 |
+| S5+combsum | 0.835    | 0.215   | 0.900     | 0.711 | 0.839          | 0.569        | 0.811           | 0.937               | 49.4 |
+| S5+nostem  | 0.767    | 0.525   | 0.843     | 0.792 | 0.792          | 0.569        | 0.742           | 0.874               | 38.4 |
+| S5+rrf     | 0.787    | 0.178   | 0.868     | 0.672 | 0.805          | 0.569        | 0.758           | 0.911               | 53.1 |
 
 `joint@k` is 1 when both gold paragraphs are in the top k. `hop2_recall@10` is the recall of the gold paragraph that
 single-shot BM25 ranks lower, i.e. the one that needs the second hop. `bridge_hit@3` is 1 when the hop-2 gold entity is
@@ -87,14 +91,15 @@ among the three selected bridges.
 
 Each cell: joint@10 (all) / joint@10 (bridge questions) / bridge_hit@3 (bridge questions).
 
-| bridge selection \ hop 2 | BM25 (residual + entity) | hybrid (phrase filter → sparse+dense) |
-|---|---|---|
-| hand score (rule-based) | S3: 0.705 / 0.661 / 0.459 | S3B: 0.697 / 0.653 / 0.459 |
-| learned ranker (LambdaMART) | S4: 0.773 / 0.747 / 0.569 | S5: 0.772 / 0.747 / 0.569 |
+| bridge selection \ hop 2    | BM25 (residual + entity)  | hybrid (phrase filter → sparse+dense) |
+| --------------------------- | ------------------------- | -------------------------------------- |
+| hand score (rule-based)     | S3: 0.705 / 0.661 / 0.459 | S3B: 0.697 / 0.653 / 0.459             |
+| learned ranker (LambdaMART) | S4: 0.773 / 0.747 / 0.569 | S5: 0.772 / 0.747 / 0.569              |
 
 ### Learned bridge ranker (held-out training questions)
 
 Training questions: 8000 bridge questions from the HotpotQA train shard (own train corpus and index).
+
 - No bridge candidate at all: 2
 - Candidates but no gold bridge entity among them (dropped): 2395
 - Kept question groups: 5603; candidate-recall ceiling **0.700**
@@ -102,31 +107,31 @@ Training questions: 8000 bridge questions from the HotpotQA train shard (own tra
 
 Hit@k on held-out groups (a gold bridge entity is among the top-k ranked candidates). The absolute column multiplies by the candidate-recall ceiling.
 
-| Ranker | hit@1 | hit@3 | hit@3 × ceiling |
-|---|---|---|---|
-| hand_score (rule-based) | 0.362 | 0.746 | 0.523 |
-| Logistic regression | 0.807 | 0.936 | 0.655 |
-| LambdaMART | 0.832 | 0.952 | 0.667 |
+| Ranker                  | hit@1 | hit@3 | hit@3 × ceiling |
+| ----------------------- | ----- | ----- | ---------------- |
+| hand_score (rule-based) | 0.362 | 0.746 | 0.523            |
+| Logistic regression     | 0.807 | 0.936 | 0.655            |
+| LambdaMART              | 0.832 | 0.952 | 0.667            |
 
 LambdaMART: `LGBMRanker` objective=lambdarank, n_estimators=300, learning_rate=0.05, num_leaves=31, random_state=42.
 Logistic regression: standardised features, pointwise binary labels.
 
 Feature importance (split gain): see `plots/ltr_feature_importance.png`.
 
-| Feature | gain share |
-|---|---|
-| lookahead_sparse | 49.6% |
-| hand_score | 19.1% |
-| n_tokens | 10.0% |
-| mean_idf | 8.1% |
-| src_hop1_score | 4.5% |
-| lookahead_dense | 2.9% |
-| min_dist_consumed | 2.5% |
-| first_pos | 1.5% |
-| tfidf_in_source | 1.0% |
-| src_hop1_rank | 0.4% |
-| n_src_docs | 0.2% |
-| in_title_zone | 0.1% |
+| Feature           | gain share |
+| ----------------- | ---------- |
+| lookahead_sparse  | 49.6%      |
+| hand_score        | 19.1%      |
+| n_tokens          | 10.0%      |
+| mean_idf          | 8.1%       |
+| src_hop1_score    | 4.5%       |
+| lookahead_dense   | 2.9%       |
+| min_dist_consumed | 2.5%       |
+| first_pos         | 1.5%       |
+| tfidf_in_source   | 1.0%       |
+| src_hop1_rank     | 0.4%       |
+| n_src_docs        | 0.2%       |
+| in_title_zone     | 0.1%       |
 
 ### Diagnostics
 
@@ -135,41 +140,48 @@ Question-type parser on EVAL:
 Rule-based qtype vs HotpotQA `type` on 1000 EVAL questions: **accuracy 0.934** (934/1000).
 
 | gold \ predicted | bridge | comparison | total | recall |
-|---|---|---|---|---|
-| bridge | 762 | 47 | 809 | 0.942 |
-| comparison | 19 | 172 | 191 | 0.901 |
-| precision | 0.976 | 0.785 | | |
+| ---------------- | ------ | ---------- | ----- | ------ |
+| bridge           | 762    | 47         | 809   | 0.942  |
+| comparison       | 19     | 172        | 191   | 0.901  |
+| precision        | 0.976  | 0.785      |       |        |
 
 Hop 2 in isolation, given the true hop-2 entity, on the TUNE bridge questions:
 
 Hop 2 is given the true hop-2 gold title surface as the bridge entity and the parser's residual query, on all 236 bridge questions of TUNE (exclude = none). Recall of the hop-2 gold doc:
 
 | hop-2 mode | alpha | recall@1 | recall@3 |
-|---|---|---|---|
-| bm25 | - | 0.877 | 0.936 |
-| hybrid | 0 | 0.941 | 0.966 |
-| hybrid | 0.25 | 0.936 | 0.966 |
-| hybrid | 0.5 | 0.881 | 0.966 |
-| hybrid | 0.75 | 0.826 | 0.936 |
-| hybrid | 1.0 | 0.814 | 0.932 |
+| ---------- | ----- | -------- | -------- |
+| bm25       | -     | 0.877    | 0.936    |
+| hybrid     | 0     | 0.941    | 0.966    |
+| hybrid     | 0.25  | 0.936    | 0.966    |
+| hybrid     | 0.5   | 0.881    | 0.966    |
+| hybrid     | 0.75  | 0.826    | 0.936    |
+| hybrid     | 1.0   | 0.814    | 0.932    |
 
 Sparse filter: gold doc inside the phrase-filtered candidate set for 0.966 of questions; mean candidate set size 8.8 (cap 50). Title bonus 0.5.
 Hybrid hop 2 runtime: 13.8 ms per call.
 
 Plots are in `results/plots/`: joint@10 by system and question type, recall@k, bridge hit rate, the α sweep, the λ
-heat map, LTR feature importance, and the fusion and stemming ablations. `results/own_queries.md` reports P@2 / P@10 of
-S0 vs S5 on our own questions.
+heat map, LTR feature importance, and the fusion and stemming ablations.
+
+Our own questions: 15 multi-hop questions outside the HotpotQA question set, each with two relevant paragraphs
+checked against the corpus (`data/own_queries.jsonl`). Per question: `results/own_queries.md`.
+
+| 15 own questions    | P@2   | P@10                                         |
+| ------------------- | ----- | -------------------------------------------- |
+| S0 single-shot BM25 | 0.500 | 0.127                                        |
+| S5 BridgeHop        | 1.000 | 0.200 (maximum with two relevant paragraphs) |
 
 ### Measured runtimes
 
 Measured on a laptop CPU (no GPU).
 
-| step | time |
-|---|---|
-| build index: dev / train / dev unstemmed | 11.3 s / 11.7 s / 7.8 s |
-| MiniLM embeddings: dev (66581 docs) / train (71269 docs) | 26 min / 27 min (43 docs/s) |
-| hybrid hop 2 per call (TUNE oracle) | 13.8 ms |
-| demo, S5 + `--compare S0`, per question after warm-up | mean 105 ms, max 285 ms (startup about 30 s) |
+| step                                                     | time                                         |
+| -------------------------------------------------------- | -------------------------------------------- |
+| build index: dev / train / dev unstemmed                 | 11.3 s / 11.7 s / 7.8 s                      |
+| MiniLM embeddings: dev (66581 docs) / train (71269 docs) | 26 min / 27 min (43 docs/s)                  |
+| hybrid hop 2 per call (TUNE oracle)                      | 13.8 ms                                      |
+| demo, S5 +`--compare S0`, per question after warm-up   | mean 105 ms, max 285 ms (startup about 30 s) |
 
 Per-question retrieval times of every system are in the `ms/q` column of the results table.
 
@@ -200,6 +212,25 @@ Per-question retrieval times of every system are in the `ms/q` column of the res
   joint@2. A learned final-ranking step could combine both.
 - **Answer extraction is out of scope.** BridgeHop retrieves the supporting paragraphs; it does not produce an answer
   string.
+
+## Data
+
+Everything is downloaded and built by `python data/prepare.py`; nothing has to be fetched by hand.
+
+| Source                                                 | Where it comes from                                                                                              | Used for                                                                      |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| HotpotQA distractor**dev** set (7,405 questions) | `https://huggingface.co/datasets/hotpotqa/hotpot_qa/resolve/main/distractor/validation-00000-of-00001.parquet` | retrieval corpus, EVAL and TUNE questions                                     |
+| HotpotQA distractor**train** shard 0             | `https://huggingface.co/datasets/hotpotqa/hotpot_qa/resolve/main/distractor/train-00000-of-00002.parquet`      | 8,000 bridge questions to train the bridge ranker (separate corpus and index) |
+| `sentence-transformers/all-MiniLM-L6-v2`             | Hugging Face model hub, downloaded on first use by`index/embed.py`                                             | dense scoring in hybrid hop 2                                                 |
+| `data/own_queries.jsonl`                             | assembled by the team with AI help (in the repo)                                                                 | own questions with checked relevant paragraphs                                |
+
+`data/prepare.py` writes to `data/processed/` (gitignored):
+
+- **Dev corpus:** every dev context paragraph, deduplicated by title, giving **66,581 documents**. The train corpus is
+  built the same way and has 71,269 documents.
+- **Questions:** the questions with their gold paragraph titles.
+- **Splits:** two disjoint splits with seed 42. **EVAL** has 1,000 questions (809 bridge, 191 comparison) and is used
+  for all reported numbers. **TUNE** has 300 questions and is the only data used for tuning.
 
 ## Setup
 
@@ -268,13 +299,13 @@ model. `--system` selects any of S0–S5, and `--compare S0` adds each gold para
 
 Committed traces in `runs/` (all S5 with `--compare S0`):
 
-| qid | question | shows |
-|---|---|---|
-| `5adcd5005542994d58a2f6f0` | Who voices the character that stars in Baseball Bugs? | bridge success |
-| `5abd573c55429924427fcfb7` | Zach Parise's father played in which league? | bridge success, phrase filter leaves one doc |
-| `5ae3fd2c5542995dadf2428f` | Are Ian Brown and Dee Snider both actors? | comparison: one hop 2 per entity |
-| `5a73595055429901807dafd6` | When was the producer of the film Betrayal born? | S0 misses the second paragraph, S5 recovers it |
-| `5abbf64055429965836003bc` | What county is Keene High School located in? | failure: wrong bridge chosen, gold bridge never extracted |
+| qid                          | question                                              | shows                                                     |
+| ---------------------------- | ----------------------------------------------------- | --------------------------------------------------------- |
+| `5adcd5005542994d58a2f6f0` | Who voices the character that stars in Baseball Bugs? | bridge success                                            |
+| `5abd573c55429924427fcfb7` | Zach Parise's father played in which league?          | bridge success, phrase filter leaves one doc              |
+| `5ae3fd2c5542995dadf2428f` | Are Ian Brown and Dee Snider both actors?             | comparison: one hop 2 per entity                          |
+| `5a73595055429901807dafd6` | When was the producer of the film Betrayal born?      | S0 misses the second paragraph, S5 recovers it            |
+| `5abbf64055429965836003bc` | What county is Keene High School located in?          | failure: wrong bridge chosen, gold bridge never extracted |
 
 ## Repository map
 
@@ -322,6 +353,18 @@ Generated and gitignored: `data/raw/`, `data/processed/`, `index/*.pkl`, `cache/
   Licensed CC BY-SA 4.0.
 - **all-MiniLM-L6-v2** (`sentence-transformers/all-MiniLM-L6-v2`), Apache 2.0. See its model card on Hugging Face.
 
-## AI use
+## Team and work division
 
-TODO (humans)
+| Member                       | Owned components                                                                                                                                                                                                                                                           |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Daksh Jain (2410110113)      | agent and evaluation: metrics and evaluation harness, entity linker, bridge extraction and residual query, learned bridge ranker (features, LambdaMART training and inference), chain scoring and fusion, pipeline S0–S5, tuning, ablations, plots, reproducibility check |
+| Arnav Jyoti (2410110071)     | index and query: data preparation, text analysis, positional zone index, BM25 / cosine / Boolean / phrase / Rocchio retrieval, question parser and hop 1, hop 2 (BM25 and hybrid) with MiniLM embeddings, demo and traces, README                                          |
+| Medhavee Binani (2410110198) | problem framing and error analysis: literature review and track positioning, own question set and its S0 vs S5 evaluation, error analysis of the demo traces, limitations and roadmap, video structure                                                                     |
+
+## AI Use
+
+- **Tests:** `tests/` was written by AI.
+- **Code review:** code review and the end-to-end reproducibility check were done with AI.
+- **Queries:** the demo and own-evaluation questions were produced by asking AI; their gold paragraphs were checked
+  against the corpus.
+- **Run time:** BridgeHop calls no LLM or external API when it runs. The only pretrained model is MiniLM.
