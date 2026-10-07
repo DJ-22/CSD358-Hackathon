@@ -9,6 +9,7 @@ from index.preprocess import analyze
 from retrieval.bm25 import bm25_search
 from retrieval.boolean import boolean_and, boolean_or, intersect, phrase_docs
 from retrieval.cosine import cosine_search
+from retrieval.prf import prf_expand
 from tests.test_index import DOCS
 
 import numpy as np
@@ -72,6 +73,16 @@ def test_bm25_candidates_keep_zero_scores(idx):
 def test_bm25_weighted_query(idx):
     temple, actress = analyze("temple actress")
     assert bm25_search(idx, {temple: 1.0, actress: 0.0}, k=5) == bm25_search(idx, [temple], k=5)
+
+
+def test_prf_adds_feedback_terms_with_beta(idx):
+    q = {t: 1.0 for t in analyze("actress")}
+    exp = prf_expand(idx, q, top_docs=[1], n_terms=2, beta=0.5)
+    assert exp[analyze("actress")[0]] == 1.0                   # original weight kept
+    added = {t: w for t, w in exp.items() if t not in q}
+    assert len(added) == 2 and set(added.values()) == {0.5}
+    assert analyze("temple")[0] in added                       # tf 3 in doc 1 (title + body): highest tf-idf
+    assert prf_expand(idx, q, top_docs=[], n_terms=2, beta=0.5) == q
 
 
 def test_cosine_ranks_obvious_doc_first(idx):
