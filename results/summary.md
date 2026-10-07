@@ -9,16 +9,16 @@
 | S2 | 0.649 | 0.128 | 0.807 | 0.707 | 0.653 | – | 0.597 | 0.869 | 13.3 |
 | S3 | 0.705 | 0.340 | 0.817 | 0.802 | 0.732 | 0.459 | 0.661 | 0.890 | 11.0 |
 | S4 | 0.773 | 0.494 | 0.849 | 0.798 | 0.796 | 0.569 | 0.747 | 0.885 | 36.3 |
-| S3B | 0.693 | 0.362 | 0.800 | 0.790 | 0.724 | 0.459 | 0.649 | 0.880 | 32.8 |
-| S5 | 0.768 | 0.491 | 0.847 | 0.784 | 0.791 | 0.569 | 0.743 | 0.874 | 38.4 |
-| S5+chain | 0.768 | 0.491 | 0.847 | 0.784 | 0.791 | 0.569 | 0.743 | 0.874 | 56.2 |
-| S5+combsum | 0.820 | 0.182 | 0.891 | 0.689 | 0.827 | 0.569 | 0.795 | 0.927 | 50.3 |
-| S5+nostem | 0.764 | 0.484 | 0.841 | 0.782 | 0.787 | 0.569 | 0.739 | 0.869 | 51.5 |
-| S5+rrf | 0.778 | 0.164 | 0.863 | 0.663 | 0.798 | 0.569 | 0.748 | 0.906 | 47.4 |
+| S3B | 0.697 | 0.417 | 0.802 | 0.804 | 0.727 | 0.459 | 0.653 | 0.885 | 42.0 |
+| S5 | 0.772 | 0.537 | 0.850 | 0.795 | 0.795 | 0.569 | 0.747 | 0.880 | 30.3 |
+| S5+chain | 0.772 | 0.537 | 0.850 | 0.795 | 0.795 | 0.569 | 0.747 | 0.880 | 42.0 |
+| S5+combsum | 0.835 | 0.215 | 0.900 | 0.711 | 0.839 | 0.569 | 0.811 | 0.937 | 49.4 |
+| S5+nostem | 0.767 | 0.525 | 0.843 | 0.792 | 0.792 | 0.569 | 0.742 | 0.874 | 38.4 |
+| S5+rrf | 0.787 | 0.178 | 0.868 | 0.672 | 0.805 | 0.569 | 0.758 | 0.911 | 53.1 |
 
-Headline: joint@10 0.600 (S0, single-shot BM25) → 0.768 (S5, full system), +0.168 absolute.
+Headline: joint@10 0.600 (S0, single-shot BM25) → 0.772 (S5, full system), +0.172 absolute.
 
-Tuned on TUNE only (300 questions, disjoint from EVAL): W_TITLE=1.0, ALPHA=0.5, LAMBDAS=[0.3, 0.3, 0.4].
+Tuned on TUNE only (300 questions, disjoint from EVAL): W_TITLE=1.0, ALPHA=0.5, TITLE_BONUS=0.5, LAMBDAS=[0.3, 0.3, 0.4].
 
 Systems: S0 single-shot zone BM25 · S0c lnc.ltc cosine · S1 parser + Boolean/free-text hop 1 · S2 S1 + Rocchio PRF · S3 bridge (hand score) + residual + chains, hop-2 BM25 · S4 S3 with the learned bridge ranker · S3B S3 with hybrid hop 2 · S5 learned ranker + hybrid hop 2. `+rrf` / `+combsum` replace the chain-first final ranking; `+nostem` uses the unstemmed index.
 
