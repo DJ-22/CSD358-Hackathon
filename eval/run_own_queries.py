@@ -1,4 +1,4 @@
-"""Run S0 and S5 on the team's hand-judged own queries and report P@2 / P@10."""
+"""Run S0 and S5 on the own judged queries and report P@2 / P@10."""
 import sys, pathlib  # bootstrap: make the repo root importable
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -10,6 +10,9 @@ from eval.metrics import p_at_k
 OWN_QUERIES = config.ROOT / "data" / "own_queries.jsonl"
 OUT_PATH = config.RESULTS_DIR / "own_queries.md"
 SYSTEMS = ("S0", "S5")
+SELECTION_NOTE = ("the questions were drafted from corpus paragraph pairs and kept after checking S5's output, "
+                  "so they illustrate the system rather than measure it (see results/metrics.csv for the "
+                  "unbiased EVAL evaluation).")
 EXAMPLE = {"qid": "own-00", "question": "EXAMPLE — replace me", "gold_titles": ["TODO", "TODO"]}
 
 
@@ -35,7 +38,7 @@ def main() -> None:
     if not OWN_QUERIES.exists():
         OWN_QUERIES.write_text(json.dumps(EXAMPLE, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"created {OWN_QUERIES.relative_to(config.ROOT)} with one example line.\n"
-              "Replace it with 15 hand-written questions, each judged with the exact titles of its relevant "
+              "Replace it with hand-written questions, each judged with the exact titles of its relevant "
               "paragraphs in the dev corpus (data/processed/title2doc_dev.json), then re-run.")
         return
     queries = [q for q in load_own_queries() if not is_placeholder(q)]
@@ -64,8 +67,9 @@ def main() -> None:
     n = len(rows)
     mean = {name: (sum(r[name][0] for r in rows) / n, sum(r[name][1] for r in rows) / n) for name in SYSTEMS}
     lines = ["# Own queries: S0 vs S5", "",
-             f"{n} hand-written questions with team-judged relevant titles (`data/own_queries.jsonl`), "
+             f"{n} own questions with judged relevant titles (`data/own_queries.jsonl`), "
              "retrieved from the dev corpus.", "",
+             f"Selection: {SELECTION_NOTE}", "",
              "| qid | question | S0 P@2 | S0 P@10 | S5 P@2 | S5 P@10 |", "|---|---|---|---|---|---|"]
     for r in rows:
         text = r["question"].replace("|", "\\|")
